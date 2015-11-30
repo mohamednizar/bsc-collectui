@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Register New Users</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>Register Here</div>
+        <div class="row col-lg-6">
+            <form class="form-group">
+                    <div class="form-group form-horizontal" name="newUser" ng-submit="submitForm(newUser.$valid)" ng-controller="userController" novalidate>
+                        <div class="col-sm-5">
+                            <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="User Name"  class="form-control input-sm"  data-ng-model="username">
+                        </div>
+                    </div>
+                <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="User Type"  class="form-control input-sm"  data-ng-model="usertype">
+                        </div>
+                    </div>
+                 <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="Full Name"  class="form-control input-sm"  data-ng-model="fullname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="Email"  class="form-control input-sm"  data-ng-model="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="Confirm Email"  class="form-control input-sm"  data-ng-model="cemail">
+                        </div>
+                    </div>
+                     <input id="Button2" type="submit" class="btn   btn-primary col-lg-offset-2 " value="Register" ng-disabled="newUser.$invalid"   data-ng-click="getUser()" />
+
+            
+        </form>
+        </div>
+    </body>
+</html>

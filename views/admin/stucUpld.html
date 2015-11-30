@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<!--
+<%-- 
+    Document   : upload
+    Created on : Sep 17, 2015, 11:26:07 AM
+    Author     : nizar
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+-->
+<html >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Collect</title>
+    </head>
+    <body class=" body " >
+        <div ng-controller="AdminController">
+            <div class="col-lg-12  content">
+
+                <div class="col-lg-12 kpi_container">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div class='form-group  col-lg-offset-5 upload-container' ng-show="upload">
+                            <div class="fileUpload has-feedback ">
+                                <span class='upload-text '>Upload your  Datasheet<span class="glyphicon glyphicon-upload"></span></span>
+                                <input  name="excel_file" accept=".xlsm,.xlsx,.xls" type="file" class="upload    fileUpload" class=" bnt btn-upload btn-success  " value="Upload" onchange="angular.element(this).scope().fileChanged(this.files);" required="true" />
+                            </div>
+
+                        </div>
+                        <div class="kpiNamedropDown" style="">
+                            <div class="form-group">
+
+                                <div ng-show="isProcessing" class="">
+
+                                    <div class=" selectpicker col-lg-offset-4 col-lg-6  " >
+                                        <div ng-dropdown-multiselect="" options="kpiName" class="selectpicker" selected-model="kpiNamemodel" data-style="btn-primary" ></div>
+                                        <br>
+                                    </div>
+                                    <div class=" selectpicker col-lg-offset-4 col-lg-2 " >
+                                        <input type="submit"   class ="btn bnt-kpiConform" value="Conform"  ng-click="confrom()">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div ng-show="showStatus">
+                                <div class="gridStyle"  style="height:fit-content;width:content-box" ng-grid="kpiStatus"   onchange="updatereson()" >
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div ng-show="success" class="col-lg-12 success_image" >
+                            <div class="col-lg-6 col-lg-offset-5 "><img class="success_image" style="width:40%" src="./images/tick_green.png" type="image/png"></div>
+                            
+                        </div>
+                        
+                        <div ng-hide="errorMessag" class="col-lg-12 success_image" >
+                            <div class="col-lg-6 col-lg-offset-5 "><img class="success_image" style="width:40%" src="./images/error.png" type="image/png"></div>
+                        </div>
+                        
+
+
+
+<!--
+                    </form> <h4>Upload on file select</h4>
+   <button class="btn" ngf-select="uploadFiles($files, $invalidFiles)" multipleaccept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+      Select Files</button>
+  <br><br>
+  Files:
+  <ul>
+    <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$errorParam}}
+      <span class="progress" ng-show="f.progress >= 0">
+        <div style="width:{{f.progress}}%"  
+            ng-bind="f.progress + '%'"></div>
+      </span>
+    </li>
+    <li ng-repeat="f in errFiles" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
+    </li> 
+  </ul>
+  {{errorMsg}}
+                    
+
+
+                </div>
+
+-->
+
+
+            </div>
+
+
+
+        </div>
+    </body>
+</html>

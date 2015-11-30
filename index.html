@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html>
+<!--
+<%-- 
+    Document   : index
+    Created on : Sep 17, 2015, 11:03:53 AM
+    Author     : nizar
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+--%>
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!-- saved from url=(0043)http://getbootstrap.com/examples/dashboard/ -->
+<html lang="en"ng-app="myApp"  >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+       
+        <title>BSC-Collect</title>
+
+
+
+        <!--Style-->
+        <link rel="stylesheet" href="./styles/lib/bootstrap/bootstrap.css"> 
+        <link rel="stylesheet" href="./styles/lib/bootstrap/bootstrap-select.min.css"> 
+        <link rel="stylesheet" href="./styles/lib/morris/morris.css">
+        <link rel="stylesheet" href="./styles/style.css">
+
+
+        <link href="./styles/lib/plugin/bootstraptab.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./styles//sweetalert.css">
+        <link href="./styles/lib/jQueryUI/jquery-ui.css" rel="stylesheet">
+        <link href="./styles/lib/plugin/navSidebar.css" rel="stylesheet">
+        <link href="./styles/lib/plugin/datetimepicker.css" rel="stylesheet">
+        <!--<link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />-->
+        <link rel="stylesheet" href="./styles/lib/angular/ui-grid.css">
+        <!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">-->
+
+        <!--Style-->
+
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+        <!--<script src="./scripts/lib/ie-emulation-modes-warning.js"></script> <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+     
+
+    </head>
+    <div ng-include="'views/common/header.html'"></div>
+    
+        <div class="content"ui-view ></div>
+        <div  ng-controller="loginController">
+        <div class="col-lg-12 " ng-hide="loginf">
+            <form class="form-horizontal"  role="form" name="newstudent" ng-submit="submitForm(login.$valid)" novalidate>
+               
+        <div class="col-xs-4 col-lg-offset-4 ">
+            <div class="panel panel-primary" >
+                <div class="panel-title">
+                    
+                </div>
+               
+                 <div class="panel-body login-form">
+                    <div class="form-group has-feedback ">
+                        <div class="col-sm-12 ">
+                            <i class=" form-control-feedback glyphicon glyphicon-user"></i>
+                            <input type="text" maxlength="50" minlength="2" name="Username" required="" placeholder="Username"    class="form-control input-sm "  glyphicon-user  data-ng-model="username">
+                                 <p ng-show="login.Username.$invalid && !UserForm.Username.$pristine" class="text-danger">* Username requrid</p>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback ">
+                        <div class="col-sm-12">
+                            <i class=" form-control-feedback glyphicon glyphicon-lock"></i>
+                            <input type="password" maxlength="50" minlength="2" name="Password" required="" placeholder="Password"  class="form-control input-sm " glyphicon-lock  data-ng-model="password">
+                               <p ng-show="login.Password.$invalid && !UserForm.Password.$pristine" class="text-danger">* Password Requird</p>
+                            
+                        </div>
+                    </div>
+                     
+                     <div class="form-group has-feedback has-feedback ">
+                        <div class="col-sm-12">
+                           
+                            <button id="Button2" type="button" class="btn btn-login form-control" value="Login"  data-ng-click="login()" >
+                                <i class="glyphicon glyphicon-log-in"></i>  Login </button>
+                        </div>
+                         
+                    </div>
+                     <div class="">
+                             <a href="#/reset">Forget password</a>
+                         </div>
+                 </div>   
+                        </div>
+                            
+                        
+                    </div>
+           </form>
+            
+        </div>
+        </div>
+         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
+        <script  src="./scripts/lib/jQuery/jquery-2.1.1.min.js"></script> 
+        <script  src="./scripts/lib/jQuery/jquery.soap.js"></script>        
+        <script src="./scripts/lib/bootstrap/bootstrap.min.js"></script>        
+        <script src="./scripts/lib/ie10-viewport-bug-workaround.js"></script>         
+        <script  src="./scripts/lib/angular/angular.min.js"></script>
+        <script src="./scripts/lib/angular/angular-ui-router.js"></script> 
+        <script src="./scripts/lib/angular/sweetalert.min.js"></script>
+        <script src="./scripts/lib/angular/angular-route.js"></script>
+        <script src="./scripts/lib/angular/angular-animate.min.js"></script> 
+        <script src="./scripts/lib/angular/angular-messages.js"></script> 
+        <script src="./scripts/lib/angular/angularjs-dropdown-multiselect.js"></script> 
+        <script src="./scripts/lib/angular/ng-file-upload.js"></script> 
+        <script src="./scripts/lib/raphael/raphael.js"></script> 
+        <script src="./scripts/lib/morris/morris.js"></script> 
+        <script src="./scripts/lib/plugins/moment.js"></script> 
+        <script src="./scripts/lib/plugins/ng-grid-flexible-height.js"></script> 
+        <script src="./scripts/lib/plugins/datetimepicker/datetimepicker.js"></script> 
+        <script src="./scripts/lib/plugins/bootstrapAngularJS/ui-bootstrap-tpls-0.11.2.min.js"></script> 
+        <script src="./scripts/lib/angular/lodash.min.js"></script>
+        <script src="./scripts/lib/angular/bluebird.js"></script>
+        <script src="./scripts/lib/angular/angular-google-maps.min.js"></script>
+        <script src="./scripts/lib/blockUI/blockUI.js"></script>
+        <script  src="./scripts/lib/angular/ui-grid.js"></script>
+        <script  src="./scripts/lib/jQueryUI/jquery-ui.js"></script> 
+        <script  src="./scripts/lib/jQueryUI/jquery-ui-1.10.4.autocomplete.js"></script> 
+        <script  src="./scripts/lib/angular/autocomplete.js"></script>
+        <script  src="./scripts/lib/js-xlsx/dist/xlsx.full.min.js"></script>
+        <script  src="./scripts/lib/xlsx-reader.js"></script>
+        <script  src="./scripts/lib/js-xlsx/jszip.js"></script>
+        <!--Library Files End-->  
+
+
+
+        <!--Angular Controller-->
+
+        <script  src="./scripts/app/controllers/app.js"></script>
+        <script  src="./scripts/app/controllers/module.js"></script>
+        <script  src="./scripts/app/controllers/excelController.js"></script>
+        <script  src="./scripts/app/controllers/loginController.js"></script>
+        <script  src="./scripts/app/controllers/admin/adminController.js"></script>
+        <script  src="./scripts/app/controllers/admin.js"></script>
+        <script  src="./scripts/app/controllers/admin/userController.js"></script>
+
+
+        <!--Angular Services-->
+
+        <script  src="./scripts/app/services/ajax.js"></script>
+        <script  src="./scripts/app/services/login.js"></script>
+        <script  src="./scripts/app/services/admin.js"></script>
+        <script  src="./scripts/app/services/kpiService.js"></script>
+
+        <!--Angular Factories-->  
+<script  src="./scripts/app/factories/excelFactory.js"></script>
+       
+     
+
+</html>
+
