@@ -4,7 +4,7 @@
         
      self.confrom = function (data, callback) {
             return ajaxService.post({
-                url: 'http://10.130.3.135:8080/BSCCollect/structure/',
+                url: 'http://localhost:8080/BSCCollect/structure/',
                 data:data,
                 dataType: 'json',
                 contentType:'application/json;'
@@ -21,7 +21,7 @@
         
      self.userReg = function (data, callback) {
             return ajaxService.post({
-                url: 'http://10.130.3.135:8080/BSCCollect/userdata/',
+                url: 'http://localhost:8080/BSCCollect/userdata/',
                 data:data,
                 dataType: 'json',
                 contentType:'application/json;'
@@ -38,7 +38,7 @@
         
         self.getUser = function (data, callback) {
             return ajaxService.get({
-                url: 'http://10.130.3.135:8080/BSCCollect/userdata/',
+                url: 'http://localhost:8080/BSCCollect/userdata/',
                 data:data,
                 dataType: 'json',
                 contentType:'application/json;'

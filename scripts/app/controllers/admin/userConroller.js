@@ -1,6 +1,8 @@
 (function (angular) {
-    angular.module('bcsCollectControllers').controller("userController", ['$scope', '$state', '$location',
-        function ($scope, $state, $location ,adminService) {
+    'use strict';
+    
+    angular.module('myApp',[]).controller('userController', ['$scope', 'adminService',
+        function ($scope,adminService ) {
 
     $scope.username ="";
     $scope.fullname= "";
@@ -11,16 +13,21 @@
     $scope.getUser = function(){
         adminService.getUser(angular.toJson()).then(function(data){
            $scope.users = data;
-           console.log(d);
+           console.log(data);
         });
     };
     
-    $scope.userda
-    $scope.userReg = function () {
+  
+                $scope.userReg = function () {
 
                     var obj = {
-                        "insertedMetricDatas": $scope.KPIData
+                        "username":$scope.username,
+                        "fullname":$scope.fullname,
+                        "email":$scope.email,
+                        "usertype":$scope.usertype,
+                        "province":$scope.provice
                     };
+                    console.log(obj);
                     // console.log(obj);
                     adminService.userReg(angular.toJson(obj)).then(function (data) {
                         $scope.progress = false;
@@ -50,5 +57,6 @@
 
 }
     ]);
+  
 });
 

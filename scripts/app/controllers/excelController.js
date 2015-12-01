@@ -91,16 +91,17 @@
                                     };
                                      console.log(Kvalue +'--'+ typeof kpiObject.value +'--'+ isNaN(kpiObject.value.valueOf()));
                                         
-                                    if (sdate instanceof Date && isNaN(sdate.valueOf())== true){
-                                        swal(Dvalue+' Date formate to (mm/dd/yyyy)');
+                                    if (!(fdate instanceof Date && isNaN(fdate.valueOf())== true)){
+                                        swal((Dvalue) +' Date formate to (mm/dd/yyyy)');
                                         $scope.KPIDateError.push(kpiObject);
                                     }
                                     if((isNaN(kpiObject.value)=== true)&&(kpiObject.date !=="" )){
                                         swal('Not Valid Number for ' +kpiObject.metricName+' In date column  ' +kpiObject.date);
                                         $scope.KPIDateError.push(kpiObject);
+                                       
                                     }
                                     
-                                    if ((sdate instanceof Date && !isNaN(sdate.valueOf())== true)&&(kpiObject.date !=="" )     && (typeof kpiObject.metricName === 'string')) {
+                                    if ((sdate instanceof Date && isNaN(sdate.valueOf())== true)&&(kpiObject.date !=="" )     && (typeof kpiObject.metricName === 'string')) {
                                         $scope.KPIData.push(kpiObject);
 
                                     }
@@ -152,11 +153,6 @@
                             $scope.ShowkpiError = true;
                             
                            // console.log($scope.status);
-                        }else{
-                            swal('Wrng file uploaded');
-                            
-                            $scope.isProcessing = false;
-                            $scope.ShowkpiError = true;
                         }
                         if ($scope.KPIDateError.length >0){
                              $scope.ShowkpiError = false;
