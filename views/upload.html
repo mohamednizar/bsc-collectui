@@ -68,9 +68,6 @@
                             </div>
                                 
                         </div>
-                        <div ng-hide="progress" class="col-lg-12 success_image" >
-                            <div class="col-lg-6 col-lg-offset-5 "><img class="success_image" style="width:40%" src="./images/eros327.gif" type="image/gif"></div>
-                        </div>
                         <div ng-hide="success" class="col-lg-12 success_image" >
                             <div class="col-lg-6 col-lg-offset-5 "><img class="success_image" style="width:40%" src="./images/tick_green.png" type="image/png"></div>
                         </div>
@@ -91,12 +88,16 @@
 
 
                 </div>
+                
 
 
 
 
             </div>
 
+             <div ng-hide="loading">
+                <img src="./images/loading.gif" class="col-lg-offset-4"/>
+            </div>
 
 
         </div>

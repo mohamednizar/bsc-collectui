@@ -18,6 +18,7 @@
                 $scope.Selectedkpi = [];
                 $scope.upload = true;
                 $scope.success = true;
+                $scope.loading = true;
                 $scope.loginf = true;
                 $scope.errorCount = 0;
                 $scope.errorMessag = true;
@@ -74,45 +75,50 @@
                                         var yyyy = spdate[2];
                                         var dd = spdate[1];
                                         var mm = spdate[0];
-                                        
                                         fdate = (yyyy + '/' + mm + '/' + dd);
+                                        
+                                        var d = Date.parse(Dvalue);
+                                        //console.log(d);
                                        
-                                        sdate =new Date (yyyy + '/' + mm + '/' + dd);
-                                        //console.log(typeof sdate);
+                                        sdate =new Date (d);
+                                       // console.log(sdate+' is  '+angular.isDate(sdate));
+                                        
                                     }
-                                    
                                     var kpiObject = {
                                         "kpiName": kpiName,
                                         "metricName": metric,
                                         "date": fdate,
                                         "value": Kvalue
-                                       
-                                        
                                     };
-                                     console.log(Kvalue +'--'+ typeof kpiObject.value +'--'+ isNaN(kpiObject.value.valueOf()));
+                                     //console.log(Kvalue +'--'+ typeof kpiObject.value +'--'+ isNaN(kpiObject.value.valueOf()));
                                         
-                                    if (!(fdate instanceof Date && isNaN(fdate.valueOf())== true)){
-                                        swal((Dvalue) +' Date formate to (mm/dd/yyyy)');
+                                    if ( (new Date(sdate) === "Invalid Date" )){
+                                        
                                         $scope.KPIDateError.push(kpiObject);
+                                      //  console.log($scope.KPIDateError+'error');
                                     }
-                                    if((isNaN(kpiObject.value)=== true)&&(kpiObject.date !=="" )){
+                                    else if((isNaN(kpiObject.value)=== true)&&(kpiObject.date !=="" ) ){
                                         swal('Not Valid Number for ' +kpiObject.metricName+' In date column  ' +kpiObject.date);
                                         $scope.KPIDateError.push(kpiObject);
                                        
                                     }
                                     
-                                    if ((sdate instanceof Date && isNaN(sdate.valueOf())== true)&&(kpiObject.date !=="" )     && (typeof kpiObject.metricName === 'string')) {
-                                        $scope.KPIData.push(kpiObject);
-
+                                    else if (((new Date(fdate) === "Invalid Date" && !isNaN(new Date(fdate)) )) && (typeof kpiObject.metricName === 'string')) {
+                                        $scope.KPIDateError.push(kpiObject);
                                     }
-                                    console.log($scope.KPIDateError);
+                                    
+                                    else if(!(isNaN(kpiObject.value)=== true)&&(kpiObject.date !=="" ) &&(kpiObject.metricName!=="")){
+                                       $scope.KPIData.push(kpiObject);
+                                       
+                                    }
+                                   // console.log($scope.KPIDateError);
                                     var kpichek = $scope.KPIData;
                                     angular.forEach(kpichek, function (d) {
                                         var key = (d.date);
                                         
                                         if ((kpichek.indexOf(key) !== -1)) {
                                             if ((typeof kpiObject.date !== "date") && (typeof kpiObject.value === "String") && (typeof kpiObject.metricName === 'string')) {
-                                                $scope.KPIDateError.puh(kpiObject);
+                                                $scope.KPIDateError.push(kpiObject);
                                                 
 
                                                //console.log($scope.KPIData) ; 
@@ -120,7 +126,7 @@
                                                 swal({ title: "Data Duplication Error",   text: "You will not be able to upload this excel file!",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, Change it!",   closeOnConfirm: true }, function(){ 
                                                     $scope.excelFile = [];
                                                     $scope.upload = true;
-                                                    return false;
+                                                     return false;
                                                     
                                                     
                                                     console.log('don');
@@ -142,6 +148,9 @@
                         // console.log($scope.KPIData);
                         $scope.v += 150;
 
+                     $scope.isDate = function(date) {
+                        return ( (new Date(date) !== "Invalid Date" && !isNaN(new Date(date)) ));
+                    }
                           //$scope.isProcessing = false;
                         // console.log($scope.KPIData.length);
                         console.log($scope.KPIData);
@@ -413,15 +422,13 @@
                             $scope.success = true;
 
                         } else {
-                            kpiService.confromRemote().then(function (data) {
+                            kpiService.confirmRemote().then(function (data) {
                                 //   console.log(data);
                             });
                             $scope.KPIDateError = false;
                             $scope.loginf = true;
                             $scope.success = false;
                             $scope.status = [];
-
-
 
                         }
                         //    console.log($scope.status);
@@ -497,8 +504,6 @@
                             $scope.success = false;
                             $scope.status = [];
 
-
-
                         }
                         //    console.log($scope.status);
 
@@ -520,7 +525,9 @@
                         "insertedMetricDatas": $scope.KPIData
                     };
                     // console.log(obj);
+                    $scope.loading = false;
                     kpiService.confirm(angular.toJson(obj)).then(function (data) {
+                        
                         $scope.progress = false;
                         console.log(data);
                         var s = data.response;
@@ -543,21 +550,21 @@
 
                         });
                         if (errorCount > 0) {
-
                             $scope.showStatus = true;
-                            $scope.success = true;
+                             $scope.loading = true;
                             
-
-
                         } else {
+                            $scope.loading = true;
                             kpiService.confromRemote().then(function (data) {
-                                //    console.log(data);
+                                //   console.log(data);
+                                 $scope.loading = false;
+                                console.log(data);
+                                
                             });
                             $scope.showStatus = false;
                             $scope.loginf = true;
-                            $scope.success = false;
+                            $scope.loading = true;
                             $scope.ShowkpiError = true;
-
 
                         }
                         //    console.log($scope.status);
@@ -570,6 +577,7 @@
                         $scope.KPIData = [];
                     }, function (error) {
                         console.log(error);
+                        $scope.loading = true;
                         swal(error.statusText+',Try Again Later')
                         
                         

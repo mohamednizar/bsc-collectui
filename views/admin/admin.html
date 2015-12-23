@@ -1,6 +1,12 @@
+<body ng-controller="ApplicationController">
+
+
+
 <div class="row" ng-controller="adminController">
+    
 
     <div class="col-md-12">
+        <input id="Button2" type="submit"  class="btn btn-danger col-lg-offset-4" value="Log Out" ng-click="EditUser()" />
         <h5>Admin Panel</h5>
 
         <tabset>    
@@ -9,14 +15,16 @@
 
             </tab>
         </tabset>
-            <div ui-view  >
+
+
+
+ <div ui-view  >
 </div>
-
-
-
 
 
     </div>
 
 
 </div>
+    
+    </body>

@@ -1,11 +1,9 @@
 (function (angular) {
     var appRoot = angular.module('myApp', ['bcsCollectControllers', 'ngGrid', 'ui.autocomplete', 'ngRoute', 'ui.router',
-        'ui.bootstrap.datetimepicker', 'ui.bootstrap', 'ngAnimate','angularjs-dropdown-multiselect','ngFileUpload']);
+        'ui.bootstrap.datetimepicker', 'ui.bootstrap', 'ngAnimate','angularjs-dropdown-multiselect','ngFileUpload','remoteValidation']);
     appRoot.config(['$stateProvider',
         function ($stateProvider) {
-
             var  
-            
             dataList = {
                 name: "dataList",
                 url: '/dataList',
@@ -24,19 +22,13 @@
             },login = {
                 name: "login",
                 url: '/login',
-                templateUrl: './views/login.html',
-                controller: 'loginController'
+                templateUrl: './views/common/login_1.html',
+                controller: 'authCtrl'
             },admin = {
                 name: "admin",
                 url: '/admin',
                 templateUrl: './views/admin/admin.html',
-                controller: 'AdminController'
-            },stucUpld = {
-                name: "stucUpld",
-                parent:"admin",
-                url: '/stucUpld',
-                templateUrl: './views/admin/stucUpld.html',
-                controller: 'AdminController'
+                controller: 'authCtrl'
             },userReg = {
                 name: "newUser",
                 parent:"admin",
@@ -49,10 +41,14 @@
                 url: '/users',
                 templateUrl: './views/admin/users.html',
                 controller: 'userController'
-            }
-                    ;
-            
-
+                
+            },stucUpld = {
+                name: "stucUpld",
+                parent:"admin",
+                url: '/stucUpld',
+                templateUrl: './views/admin/stucUpld.html',
+                controller: 'AdminController'
+            };
             
             $stateProvider.state(dataList);
             $stateProvider.state(kpiConform);
@@ -63,41 +59,27 @@
             $stateProvider.state(stucUpld);
             $stateProvider.state(users);
             
-        }]).run(['$rootScope', '$state', '$stateParams',
-        function ($rootScope, $state, $stateParams, document) {
-            $.blockUI.defaults.css.border = '1px solid #CCCCCC';
-            $(document).ajaxStart(function () {
-                $.blockUI({
-                    message: '<h3 style="color:#555555;"><img src="images/ajax-loader.gif" style="margin-right:15px;" />Just a moment.</h3>',
-                    overlayCSS: {
-                        opacity: 0
-                    },
-                    fadeIn: 300,
-                    baseZ: 9999999,
-                    css: {
-                        backgroundColor: '#EEEEEE',
-                        borderRadius: '4px',
-                        width: '15%',
-                        minWidth: '300px',
-                        left: '40%',
-                        padding: '10px 0 15px',
-                        boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)'
+            
+        }]).run(function ($rootScope, $location, Data) {
+        $rootScope.$on("$routeChangeStart", function (event, next, current) {
+            $rootScope.authenticated = false;
+            Data.get('session').then(function (results) {
+                if (results.uid) {
+                    $rootScope.authenticated = true;
+                    $rootScope.uid = results.uid;
+                    $rootScope.name = results.name;
+                    $rootScope.email = results.email;
+                } else {
+                    var nextUrl = next.$$route.originalPath;
+                    if (nextUrl == '/signup' || nextUrl == '/login') {
+
+                    } else {
+                        $location.path("/login");
                     }
-                });
-
-                timer = setTimeout(function () {
-                    if (timer)
-                        clearTimeout(timer);
-                    $.unblockUI();
-                }, 2000);
+                }
             });
-
-            $rootScope.$state = $state;
-            $rootScope.$stateParams = $stateParams;
-
-
-
-        }]);
+        });
+    });
 
 
 })(angular, jQuery);

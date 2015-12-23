@@ -1,9 +1,7 @@
+'use strict';
 (function (angular) {
-    'use strict';
-    
-    angular.module('myApp',[]).controller('userController', ['$scope', 'adminService',
-        function ($scope,adminService ) {
-
+    angular.module('bcsCollectControllers').controller("userController",
+            function ($scope,adminService) {
     $scope.username ="";
     $scope.fullname= "";
     $scope.email ="";
@@ -16,26 +14,17 @@
            console.log(data);
         });
     };
-    
-  
-                $scope.userReg = function () {
-
+ 
+    $scope.userReg = function () {
                     var obj = {
-                        "username":$scope.username,
-                        "fullname":$scope.fullname,
-                        "email":$scope.email,
-                        "usertype":$scope.usertype,
-                        "province":$scope.provice
+                        "insertedMetricDatas": $scope.KPIData
                     };
-                    console.log(obj);
                     // console.log(obj);
                     adminService.userReg(angular.toJson(obj)).then(function (data) {
                         $scope.progress = false;
                         console.log(data);
                         var s = data.response;
                         $scope.status = [];
-                       
-                       
                         //    console.log($scope.status);
                         $scope.progress = true;
                         $scope.upload = false;
@@ -54,9 +43,6 @@
                 };
     
     
-
-}
-    ]);
-  
+});
 });
 

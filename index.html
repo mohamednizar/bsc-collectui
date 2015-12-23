@@ -33,10 +33,11 @@ and open the template in the editor.
         <link rel="stylesheet" href="./styles/lib/bootstrap/bootstrap-select.min.css"> 
         <link rel="stylesheet" href="./styles/lib/morris/morris.css">
         <link rel="stylesheet" href="./styles/style.css">
+       
 
 
         <link href="./styles/lib/plugin/bootstraptab.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="./styles//sweetalert.css">
+        <link rel="stylesheet" type="text/css" href="./styles/sweetalert2.css">
         <link href="./styles/lib/jQueryUI/jquery-ui.css" rel="stylesheet">
         <link href="./styles/lib/plugin/navSidebar.css" rel="stylesheet">
         <link href="./styles/lib/plugin/datetimepicker.css" rel="stylesheet">
@@ -60,62 +61,17 @@ and open the template in the editor.
     <div ng-include="'views/common/header.html'"></div>
     
         <div class="content"ui-view ></div>
-        <div  ng-controller="loginController">
-        <div class="col-lg-12 " ng-hide="loginf">
-            <form class="form-horizontal"  role="form" name="newstudent" ng-submit="submitForm(login.$valid)" novalidate>
-               
-        <div class="col-xs-4 col-lg-offset-4 ">
-            <div class="panel panel-primary" >
-                <div class="panel-title">
-                    
-                </div>
-               
-                 <div class="panel-body login-form">
-                    <div class="form-group has-feedback ">
-                        <div class="col-sm-12 ">
-                            <i class=" form-control-feedback glyphicon glyphicon-user"></i>
-                            <input type="text" maxlength="50" minlength="2" name="Username" required="" placeholder="Username"    class="form-control input-sm "  glyphicon-user  data-ng-model="username">
-                                 <p ng-show="login.Username.$invalid && !UserForm.Username.$pristine" class="text-danger">* Username requrid</p>
-                            
-                        </div>
-                    </div>
-                    <div class="form-group has-feedback ">
-                        <div class="col-sm-12">
-                            <i class=" form-control-feedback glyphicon glyphicon-lock"></i>
-                            <input type="password" maxlength="50" minlength="2" name="Password" required="" placeholder="Password"  class="form-control input-sm " glyphicon-lock  data-ng-model="password">
-                               <p ng-show="login.Password.$invalid && !UserForm.Password.$pristine" class="text-danger">* Password Requird</p>
-                            
-                        </div>
-                    </div>
-                     
-                     <div class="form-group has-feedback has-feedback ">
-                        <div class="col-sm-12">
-                           
-                            <button id="Button2" type="button" class="btn btn-login form-control" value="Login"  data-ng-click="login()" >
-                                <i class="glyphicon glyphicon-log-in"></i>  Login </button>
-                        </div>
-                         
-                    </div>
-                     <div class="">
-                             <a href="#/reset">Forget password</a>
-                         </div>
-                 </div>   
-                        </div>
-                            
-                        
-                    </div>
-           </form>
-            
-        </div>
-        </div>
-         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
+        <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+    
+
         <script  src="./scripts/lib/jQuery/jquery-2.1.1.min.js"></script> 
         <script  src="./scripts/lib/jQuery/jquery.soap.js"></script>        
         <script src="./scripts/lib/bootstrap/bootstrap.min.js"></script>        
         <script src="./scripts/lib/ie10-viewport-bug-workaround.js"></script>         
         <script  src="./scripts/lib/angular/angular.min.js"></script>
         <script src="./scripts/lib/angular/angular-ui-router.js"></script> 
-        <script src="./scripts/lib/angular/sweetalert.min.js"></script>
+        <script src="./scripts/lib/angular/sweetalert2.min.js"></script>
+        <script src="./scripts/lib/angular/swal-forms.js"></script>
         <script src="./scripts/lib/angular/angular-route.js"></script>
         <script src="./scripts/lib/angular/angular-animate.min.js"></script> 
         <script src="./scripts/lib/angular/angular-messages.js"></script> 
@@ -137,35 +93,37 @@ and open the template in the editor.
         <script  src="./scripts/lib/angular/autocomplete.js"></script>
         <script  src="./scripts/lib/js-xlsx/dist/xlsx.full.min.js"></script>
         <script  src="./scripts/lib/xlsx-reader.js"></script>
+        <script  src="./scripts/lib/toaster.js"></script>
         <script  src="./scripts/lib/js-xlsx/jszip.js"></script>
         <!--Library Files End-->  
 
 
 
         <!--Angular Controller-->
-
         <script  src="./scripts/app/controllers/app.js"></script>
+        <script  src="./scripts/app/authCtrl.js"></script>
         <script  src="./scripts/app/controllers/module.js"></script>
-        <script  src="./scripts/app/controllers/modulePopup.js"></script>
-        <script  src="./scripts/app/controllers/admin/userController.js"></script>
         <script  src="./scripts/app/controllers/excelController.js"></script>
-        <script  src="./scripts/app/controllers/loginController.js"></script>
+        <script  src="./scripts/app/controllers/userController.js"></script>
         <script  src="./scripts/app/controllers/admin.js"></script>
         <script  src="./scripts/app/controllers/admin/adminController.js"></script>
         
        
-        
-
-
+        <!--Angular Directive-->
+        <script  src="./scripts/app/directive/login.js"></script>
         <!--Angular Services-->
-
-        <script  src="./scripts/app/services/ajax.js"></script>
         <script  src="./scripts/app/services/login.js"></script>
+        <script  src="./scripts/app/services/ajax.js"></script>
+        <script  src="./scripts/app/services/userService.js"></script>
         <script  src="./scripts/app/services/admin.js"></script>
         <script  src="./scripts/app/services/kpiService.js"></script>
+        <script  src="./scripts/app/services/dataservice.js"></script>
+        <script  src="./scripts/app/services/angularremotevalidation.js"></script>
 
         <!--Angular Factories-->  
-<script  src="./scripts/app/factories/excelFactory.js"></script>
+        <script  src="./scripts/app/factories/excelFactory.js"></script>
+        <script  src="./scripts/app/factories/autocomplete.js"></script>
+        <script  src="./scripts/app/factories/utils.js"></script>
        
      
 

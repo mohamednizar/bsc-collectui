@@ -5,7 +5,7 @@
         
      self.confirm = function (data, callback) {
             return ajaxService.post({
-                url: 'http://10.130.3.135:8080/BSCCollect/metricdata/',
+                url: 'metricdata/',
                 data:data,
                 dataType: 'json',
                 contentType:'application/json;'
@@ -21,8 +21,8 @@
         };
         
         self.confirmRemote = function (data, callback) {
-            return ajaxService.get({
-                url: 'http://10.130.3.135:8080/BSCCollect/bscconnect/',
+            return ajaxService.post({
+                url: 'bscconnect/',
                 data:data,
                 dataType: 'json',
                 contentType:'application/json;'

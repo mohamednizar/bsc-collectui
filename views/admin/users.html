@@ -1,16 +1,83 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>Users</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
+<div ng-controller="userController">
         <div>View All Users</div>
-    </body>
-</html>
+        
+        <div class="gridStyle"  style="width:100%;"  ng-grid="userTable"   onchange="" ng-hide="usergrid" ></div><!--angular.element(this).scope().updatereson()-->
+<div class=" col-lg-4" ng-hide="userEdit">
+            <form class="" role="form" name="newUser" ng-submit="submitForm(newUser.$valid)" novalidate="">
+                <div class="row" >
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="uname" required="" placeholder="User Name"  class="form-control input-sm"  data-ng-model="username"   onchange="angular.element(this).scope().checkuser()">
+                       <br>
+                    </div>
+                       
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="UserType" value="usertype.Name" required="" placeholder="User Type"  class="form-control input-sm"  ui-Autocomplete="userTypeAutocomplete" data-ng-model="usertype.Name">
+                      <br>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="fullname" required="" placeholder="Full Name"  class="form-control input-sm"  data-ng-model="fullname">
+                         <br>
+                    </div>
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="designation" required="" placeholder="Designation"  class="form-control input-sm"  data-ng-model="designation">
+                        <br>
+                    </div>
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="14" minlength="7" name="phone" required="" ng-pattern="/^[0-9]{10,10}$/" placeholder="Phone"  class="form-control input-sm"  data-ng-model="phone">
+                         <br>
+                    </div>
+                </div>
+                
+                
+                
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="email" maxlength="50" minlength="2" name="uemail" required placeholder="Email"  class="form-control input-sm"  data-ng-model="Uemail">
+                       <br>
+                    </div>
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="email" maxlength="50" minlength="2" name="cemail"  required placeholder="Confirm Email"  class="form-control input-sm"  data-ng-model="cemail">
+                        <br>
+                    </div>
+                </div>
+                
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="province" required="" placeholder="Province"  class="form-control input-sm"  ui-Autocomplete="ProvincesAutocomplete" data-ng-model="province.Name">
+                        <br>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <input id="Button2" type="submit"  class="btn btn-info " value="Back"   data-ng-click="EditUser()" />
+                    <input id="Button2" type="submit"  class="btn btn-danger " value="Update"   data-ng-click="userUpdate()" />
+                </div>
+            </form>
+            
+             
+        </div>
+        <div ng-hide="loading">
+                <img src="./images/loading.gif" class="col-lg-offset-4"/>
+            </div>
+
+
+</div>
+

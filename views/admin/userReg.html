@@ -1,66 +1,105 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>Register New Users</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
+<div  ng-controller="userController" >
         
-        <div class="panel panel-default">
-            <div class="panel-heading">Register Here</div>
-            <div class="panel-body">
+        
+        <div class="" ng-show="userregform">
+           
          <div class=" col-lg-4">
-            <form class="" name="newUser" ng-submit="submitForm(newUser.$valid)" ng-controller="" novalidate="">
+            <form class="" role="form" name="newUser" ng-submit="submitForm(newUser.$valid)" novalidate="">
                 <div class="row" >
                     <div class="col-lg-12">
-                        <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="User Name"  class="form-control input-sm"  data-ng-model="username">
-                    <br>
+                        <input type="text" maxlength="50" minlength="2" name="uname" required="" placeholder="User Name"  class="form-control input-sm"  data-ng-model="username"   onchange="angular.element(this).scope().checkuser()">
+                        <p ng-show="newUser.uname.$error.required" class="text-danger ">* User Name is required.</p>
+                        <p ng-show="newUser.uname.$error.duplicate && !newUser.uname.$error.required" class="text-danger " >{{username}} Already taken</p>
+
+                        <br>
                     </div>
+                       
                 </div>
                 
                 <div class="">
                     <div class="col-lg-12">
-                        <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="User Type"  class="form-control input-sm"  data-ng-model="usertype">
-                    <br>
-                    </div>
-                
-                </div>
-                
-                <div class="">
-                    <div class="col-lg-12">
-                        <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="Full Name"  class="form-control input-sm"  data-ng-model="fullname">
-                    <br>
-                    </div>
-                </div>
-                
-                <div class="">
-                    <div class="col-lg-12">
-                        <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="Email"  class="form-control input-sm"  data-ng-model="email">
-                   <br>
-                    </div>
-                </div>
-                
-                <div class="">
-                    <div class="col-lg-12">
-                        <input type="text" maxlength="50" minlength="2" name="fname" required="" placeholder="Confirm Email"  class="form-control input-sm"  data-ng-model="cemail">
+                        <input type="text" maxlength="50" minlength="2" name="UserType" required="" placeholder="User Type"  class="form-control input-sm"  ui-Autocomplete="userTypeAutocomplete" data-ng-model="usertype.Name">
+                      <p ng-show="newUser.UserType.$invalid && !userForm.UserType.$pristine" class="text-danger ">* User Type is required.</p>
                         <br>
                     </div>
                 </div>
                 
+                
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="fullname" required="" placeholder="Full Name"  class="form-control input-sm"  data-ng-model="fullname">
+                         <p ng-show="newUser.fullname.$invalid && !userForm.fullname.$pristine" class="text-danger ">*Full name is required.</p>
+                    
+                        <br>
+                    </div>
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="designation" required="" placeholder="Designation"  class="form-control input-sm"  data-ng-model="designation">
+                        <p ng-show="newUser.designation.$invalid && !userForm.designation.$pristine" class="text-danger ">*Designation is required.</p>
+                    
+                        <br>
+                    </div>
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="14" minlength="7" name="phone" required="" ng-pattern="/^[0-9]{10,10}$/" placeholder="Phone"  class="form-control input-sm"  data-ng-model="phone">
+                        <p ng-show="newUser.phone.$error.required" class="text-danger ">*Phone is required.</p>
+                        <p ng-show="newUser.phone.$error.pattern" class="text-danger ">*Not A valid phone number.</p>
+                    
+                        <br>
+                    </div>
+                </div>
+                
+                
+                
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="email" maxlength="50" minlength="2" name="uemail" required placeholder="Email"  class="form-control input-sm"  data-ng-model="Uemail">
+                        <p ng-show=" newUser.uemail.$error.required" class="text-danger ">*Email is required.</p>
+                         <p ng-show="newUser.uemail.$error.email" class="text-danger ">*Email is not valid .</p>
+                    
+                        <br>
+                    </div>
+                </div>
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="email" maxlength="50" minlength="2" name="cemail"  required placeholder="Confirm Email"  class="form-control input-sm"  data-ng-model="cemail">
+                        <p ng-show="newUser.cemail.$error.required" class="text-danger ">*Confirm Email is required.</p>
+                        <p ng-show="newUser.cemail.$error.email" class="text-danger ">*Email not match is .</p>
+                    
+                        <br>
+                    </div>
+                </div>
+                
+                
+                <div class="">
+                    <div class="col-lg-12">
+                        <input type="text" maxlength="50" minlength="2" name="province" required="" placeholder="Province"  class="form-control input-sm"  ui-Autocomplete="ProvincesAutocomplete" data-ng-model="province.Name">
+                        <p ng-show="newUser.province.$invalid && !userForm.province.$pristine" class="text-danger ">*Province is required.</p>
+                        <br>
+                    </div>
+                </div>
+                
+                
+                
                 <div class="col-lg-12">
-                    <input id="Button2" type="submit"  class="btn btn-danger col-lg-offset-4" value="Clear" ng-disabled="newUser.$invalid"   data-ng-click="userReg()" />
-                <input id="Button2"  type="submit" class="btn btn-primary " value="Register" ng-disabled="newUser.$invalid"   data-ng-click="getUser()" />
+                    <input id="Button2" type="submit"  class="btn btn-danger col-lg-offset-4" value="Clear"   data-ng-click="clear()" />
+                <input id="Button2"  type="submit" class="btn btn-primary " value="Register" ng-disabled="newUser.$invalid"   data-ng-click="userReg()" />
                 </div>
             </form>
-             
+            
+           
         </div>
         </div>
-        </div>
-    </body>
-</html>
+     
+             <div ng-hide="loading">
+                <img src="./images/loading.gif" class="col-lg-offset-4"/>
+            </div>
+    
+</div>
