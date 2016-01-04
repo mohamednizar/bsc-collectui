@@ -61,7 +61,11 @@ and open the template in the editor.
     <div ng-include="'views/common/header.html'"></div>
     
         <div class="content"ui-view ></div>
-        <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+        
+        <body >
+ <div login-dialog ng-if="!isLoginPage"></div>
+</body>
+       
     
 
         <script  src="./scripts/lib/jQuery/jquery-2.1.1.min.js"></script> 
@@ -95,24 +99,28 @@ and open the template in the editor.
         <script  src="./scripts/lib/xlsx-reader.js"></script>
         <script  src="./scripts/lib/toaster.js"></script>
         <script  src="./scripts/lib/js-xlsx/jszip.js"></script>
+        
+       
         <!--Library Files End-->  
 
 
-
         <!--Angular Controller-->
+        
+        
+        
         <script  src="./scripts/app/controllers/app.js"></script>
-        <script  src="./scripts/app/authCtrl.js"></script>
+        <script  src="./scripts/app/controllers/loginController.js"></script>
         <script  src="./scripts/app/controllers/module.js"></script>
         <script  src="./scripts/app/controllers/excelController.js"></script>
         <script  src="./scripts/app/controllers/userController.js"></script>
         <script  src="./scripts/app/controllers/admin.js"></script>
         <script  src="./scripts/app/controllers/admin/adminController.js"></script>
-        
+        <script  src="./scripts/app/controllers/admin/appController.js"></script>
        
-        <!--Angular Directive-->
-        <script  src="./scripts/app/directive/login.js"></script>
+        <!--Angular Directive    <script  src="./scripts/app/directive/login.js"></script> -->
+     
         <!--Angular Services-->
-        <script  src="./scripts/app/services/login.js"></script>
+        
         <script  src="./scripts/app/services/ajax.js"></script>
         <script  src="./scripts/app/services/userService.js"></script>
         <script  src="./scripts/app/services/admin.js"></script>
@@ -124,7 +132,6 @@ and open the template in the editor.
         <script  src="./scripts/app/factories/excelFactory.js"></script>
         <script  src="./scripts/app/factories/autocomplete.js"></script>
         <script  src="./scripts/app/factories/utils.js"></script>
-       
      
 
 </html>

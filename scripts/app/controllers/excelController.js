@@ -1,4 +1,3 @@
-'use strict';
 (function (angular) {
     angular.module('bcsCollectControllers').controller("PreviewController",
             function ($scope, XLSXReaderService, kpiService) {
@@ -23,11 +22,7 @@
                 $scope.errorCount = 0;
                 $scope.errorMessag = true;
                 $scope.progress = true;
-
-
                 $scope.newstatus = [];
-
-
                 $scope.uploadtrue = function () {
                     window.location.reload();
                     

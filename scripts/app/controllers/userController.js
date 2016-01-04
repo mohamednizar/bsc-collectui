@@ -1,117 +1,116 @@
 (function (angular) {
-     angular.module('bcsCollectControllers').controller("userController", 
-        function ($scope, $location,userService,utilityFactory, autocompleteFactory) {
-        $scope.username ="";
-        $scope.password ="";
-        $scope.loginf = true;
-        
-                 
-                $scope.username !== ($scope.ckeckname) ;
-              
-                
-                $scope.Uemail = {text:"me@example.com"}
+    angular.module('bcsCollectControllers').controller("userController",
+            function ($scope, $location, userService, utilityFactory, autocompleteFactory) {
+                $scope.username = "";
+                $scope.password = "";
+                $scope.loginf = true;
+                $scope.username !== ($scope.ckeckname);
+                $scope.Uemail = {text: "me@example.com"};
                 $scope.cemail = $scope.Uemail;
-                
                 $scope.province = {Id: "", Name: ""};
                 $scope.usertype = {Id: "", Name: ""};
                 $scope.phone = "";
-                $scope.designation="";
+                $scope.designation = "";
                 $scope.users = [];
                 $scope.loading = true;
                 $scope.userregform = true;
                 $scope.userEdit = true;
                 $scope.usergrid = false;
-        
-            $scope.login = function () {
-                var obj =
-                        {
-                            "username": $scope.username,
-                            "password": $scope.password
-                        };
-                        
-                userService.login(angular.toJson(obj)).then(function (data) {
-                    var d = data;
-                    console.log(data);
-                    if (data==='{"isvalid":"valid login","type":"adm"}'){
-                        $location.path('/admin');
-                        $scope.loginf = true;
-                        $scope.username ="";
-                        $scope.password ="";
-                        if (!$scope.$$phase)
-                        $scope.$apply();
-                    }
-                    else if (data==='{"isvalid":"valid login","type":"com"}'){
-                        $location.path('/upload');
-                        $scope.loginf = true;
-                        $scope.username ="";
-                        $scope.password ="";
-                        if (!$scope.$$phase)
-                        $scope.$apply();
-                    }else{
-                        swal('Wrong login');
-                    }
-                    
-                    if (!$scope.$$phase)
-                        $scope.$apply();
-                    
-                    
-                });
+                $scope.loggedIn = false;
+                $scope.loginType = "";
 
-            };
+                $scope.login = function () {
+                    var obj =
+                            {
+                                "username": $scope.username,
+                                "password": $scope.password
+                            };
+
+                    userService.login(angular.toJson(obj)).then(function (data) {
+                        var d = data;
+                        console.log(data);
+                        if (data === '{"isvalid":"valid login","type":"adm"}') {
+                            $location.path('/admin');
+                            $scope.loginf = true;
+                            $scope.username = "";
+                            $scope.password = "";
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                            $scope.loggedIn = true;
+                            $scope.loginType = data.type;
+                        }
+                        else if (data === '{"isvalid":"valid login","type":"com"}') {
+                            $location.path('/upload');
+                            $scope.loginf = true;
+                            $scope.username = "";
+                            $scope.password = "";
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                        } else {
+                            swal('Wrong login');
+                        }
+
+                        if (!$scope.$$phase)
+                            $scope.$apply();
+
+
+                    });
+
+                };
                 getusers();
-                function getusers(){
-                     userService.getUser(angular.toJson()).then(function (data) {
+                function getusers() {
+                    userService.getUser(angular.toJson()).then(function (data) {
                         $scope.users = data;
                         if (!$scope.$$phase)
                             $scope.$apply();
 
                     });
                 }
-                
+
                 $scope.getUsers = function () {
-                getusers();
+                    getusers();
                 };
-               
-                
-                $scope.checkuser = function(){
-                    var  obj = $scope.username;
-                    userService.getuserbyid(obj.toString()).then(function (data,e) {
-                    var d = data;
-                    $scope.checkname = d.user_id;
-                        $scope.$watch('username', function(newVal){
-                            if(newVal===$scope.checkname){
-                                ($scope.newUser.uname.$setValidity('duplicate',false));
+
+
+                $scope.checkuser = function () {
+                    var obj = $scope.username;
+                    userService.getuserbyid(obj.toString()).then(function (data, e) {
+                        var d = data;
+                        $scope.checkname = d.user_id;
+                        $scope.$watch('username', function (newVal) {
+                            if (newVal === $scope.checkname) {
+                                ($scope.newUser.uname.$setValidity('duplicate', false));
                             }
-                          });
-                   
-                        
-                     if (!$scope.$$phase)
-                        $scope.$apply();
-                   
-                },function (e){
-                   // console.log(e.statusText);
-                });
-                    
+                        });
+
+
+                        if (!$scope.$$phase)
+                            $scope.$apply();
+
+                    }, function (e) {
+                        // console.log(e.statusText);
+                    });
+
                 };
-                $scope.EditUser = function (data){
-                    $scope.userEdit = $scope.userEdit === false ? true: false;
-                    $scope.usergrid = $scope.usergrid === true ? false: true;
+                $scope.EditUser = function (data) {
+                    $scope.userEdit = $scope.userEdit === false ? true : false;
+                    $scope.usergrid = $scope.usergrid === true ? false : true;
                     $scope.usertype.Name = data.user_type;
                     $scope.username = data.user_id;
-                    $scope.Uemail = data.email; 
+                    $scope.Uemail = data.email;
                     $scope.phone = data.phone_number;
-                    $scope.province.Id = data.province_id ;
+                    $scope.province.Id = data.province_id;
                     $scope.fullname = data.user_name;
                     $scope.designation = data.designation;
-                    
-                    
+
+
                 };
-                
-                
+
+
                 $scope.DeleteUser = function (data) {
                     var obj = data;
                     swal({
-                        title: "do you want to delet user " +data.user_id,
+                        title: "do you want to delet user " + data.user_id,
                         text: "You will not be able to recover this details!",
                         type: "warning",
                         showCancelButton: true,
@@ -122,27 +121,27 @@
                         closeOnCancel: false
                     },
                     function (isConfirm) {
-                            if (isConfirm) {
-                    
-                    userService.deleteUser(angular.toJson(obj)).then(function (data) {
-                    var d = data;
-                    getUsers();
-                    if (!$scope.$$phase)
-                        $scope.$apply();
-                });
-                       getUsers();
-                    if (!$scope.$$phase)
-                        $scope.$apply();
-                                swal("Deleted!", "Get in to the view of user", "success");
-                                
+                        if (isConfirm) {
+
+                            userService.deleteUser(angular.toJson(obj)).then(function (data) {
+                                var d = data;
+                                getUsers();
+                                if (!$scope.$$phase)
+                                    $scope.$apply();
+                            });
+                            getUsers();
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                            swal("Deleted!", "Get in to the view of user", "success");
+
                         }
                         else {
                             swal("Cancelled", "Continue the Registration :)", "success");
                         }
-                    
+
                     });
-               
-            };
+
+                };
                 $scope.userTable = {
                     data: 'users',
                     columnDefs: [
@@ -166,20 +165,20 @@
                     clearUser();
                 };
                 function clearUser() {
-                     if ($scope.username === "" || $scope.fullname === "" || $scope.Uemail === "" || $scope.cemail === "" || $scope.usertype === "" || $scope.province === "") {
-                       
-                    swal({
-                        title: "Are you sure?",
-                        text: "You will not be able to recover this details!",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "No, cancel plx!",
-                        closeOnConfirm: false,
-                        closeOnCancel: false
-                    },
-                    function (isConfirm) {
+                    if ($scope.username === "" || $scope.fullname === "" || $scope.Uemail === "" || $scope.cemail === "" || $scope.usertype === "" || $scope.province === "") {
+
+                        swal({
+                            title: "Are you sure?",
+                            text: "You will not be able to recover this details!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes, delete it!",
+                            cancelButtonText: "No, cancel plx!",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        },
+                        function (isConfirm) {
                             if (isConfirm) {
                                 $scope.username = "";
                                 $scope.fullname = "";
@@ -191,14 +190,14 @@
                                     $scope.$apply();
                                 swal("Cleard!", "Start new Registration filing", "success");
 
-                            
-                        }
-                        else {
-                            swal("Cancelled", "Continue the Registration :)", "success");
-                        }
-                    
-                    });
-                }
+
+                            }
+                            else {
+                                swal("Cancelled", "Continue the Registration :)", "success");
+                            }
+
+                        });
+                    }
                 }
 
                 //user type 
@@ -223,8 +222,8 @@
                             $scope.$apply();
                     }
                 });
-                
-                 $scope.userUpdate = function () {
+
+                $scope.userUpdate = function () {
                     var obj = {
                         "user_id": $scope.username,
                         "user_name": $scope.fullname,
@@ -235,34 +234,34 @@
                         "province_id": $scope.province.Id
 
                     };
-                     $scope.userEdit = true;
-                     $scope.loading = false;
-                      if (!$scope.$$phase)
-                           $scope.$apply();
+                    $scope.userEdit = true;
+                    $scope.loading = false;
+                    if (!$scope.$$phase)
+                        $scope.$apply();
                     userService.putUser(angular.toJson(obj)).then(function (data) {
-                       
+
                     }, function (data) {
-                        
+
                         $scope.usergrid = false;
                         $scope.loading = true;
                         if (!$scope.$$phase)
-                           $scope.$apply();
+                            $scope.$apply();
                         console.log(data);
-                        swal('User '+ data.statusText);
-                                $scope.username = "";
-                                $scope.fullname = "";
-                                $scope.Uemail = "";
-                                $scope.usertype = "";
-                                $scope.province = "";
-                                $scope.cemail = "";
-                                $scope.designation="";
-                                $scope.phone = "";
-                                if (!$scope.$$phase)
-                                    $scope.$apply();
+                        swal('User ' + data.statusText);
+                        $scope.username = "";
+                        $scope.fullname = "";
+                        $scope.Uemail = "";
+                        $scope.usertype = "";
+                        $scope.province = "";
+                        $scope.cemail = "";
+                        $scope.designation = "";
+                        $scope.phone = "";
+                        if (!$scope.$$phase)
+                            $scope.$apply();
                     });
-                    
+
                 };
-                
+
                 $scope.userReg = function () {
                     var obj = {
                         "user_id": $scope.username,
@@ -274,41 +273,41 @@
                         "province_id": $scope.province.Id
 
                     };
-                     $scope.userregform = false;
-                     $scope.loading = false;
-                      if (!$scope.$$phase)
-                           $scope.$apply();
+                    $scope.userregform = false;
+                    $scope.loading = false;
+                    if (!$scope.$$phase)
+                        $scope.$apply();
                     userService.insertReg(angular.toJson(obj)).then(function (data) {
-                      
-                       
+
+
                     }, function (data) {
                         $scope.userregform = true;
                         $scope.loading = true;
                         if (!$scope.$$phase)
-                           $scope.$apply();
+                            $scope.$apply();
                         console.log(data);
-                        swal('User '+ data.statusText);
-                                $scope.username = "";
-                                $scope.fullname = "";
-                                $scope.Uemail = "";
-                                $scope.usertype = "";
-                                $scope.province = "";
-                                $scope.cemail = "";
-                                $scope.designation="";
-                                $scope.phone = "";
-                                $location.path('/admin/users');
-                                if (!$scope.$$phase)
-                                    $scope.$apply();
-                                
+                        swal('User ' + data.statusText);
+                        $scope.username = "";
+                        $scope.fullname = "";
+                        $scope.Uemail = "";
+                        $scope.usertype = "";
+                        $scope.province = "";
+                        $scope.cemail = "";
+                        $scope.designation = "";
+                        $scope.phone = "";
+                        $location.path('/admin/users');
+                        if (!$scope.$$phase)
+                            $scope.$apply();
+
                     });
 
                 };
 
-        
-        
-        
-        });
 
-    
-    
+
+
+            });
+
+
+
 })(angular);

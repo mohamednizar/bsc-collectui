@@ -1,7 +1,7 @@
 'use strict';
 (function (angular) {
     angular.module('bcsCollectControllers').controller("userController",
-            function ($scope,adminService) {
+            function ($scope,adminService, AUTH_EVENTS, AuthService) {
     $scope.username ="";
     $scope.fullname= "";
     $scope.email ="";
@@ -14,6 +14,22 @@
            console.log(data);
         });
     };
+    
+      $scope.credentials = {
+    username: '',
+    password: ''
+  };
+  $scope.login = function (credentials) {
+    AuthService.login(credentials).then(function (user) {
+      $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+      $scope.setCurrentUser(user);
+    }, function () {
+      $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+    });
+  };
+ 
+ 
+    
  
     $scope.userReg = function () {
                     var obj = {

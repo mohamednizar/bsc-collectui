@@ -1,6 +1,6 @@
 (function (angular) {
     angular.module('bcsCollectControllers').controller("adminController", ['$scope', '$state', '$location',
-        function ($scope, $state, $location) {
+        function ($scope, $state, $location, $rootScope, AUTH_EVENTS, AuthService,USER_ROLES) {
 
             $scope.tabs = [
                 {title: 'Stucture Upload', template: "stucUpld", active: false},
