@@ -19,48 +19,11 @@
                 $scope.loggedIn = false;
                 $scope.loginType = "";
 
-                $scope.login = function () {
-                    var obj =
-                            {
-                                "username": $scope.username,
-                                "password": $scope.password
-                            };
-
-                    userService.login(angular.toJson(obj)).then(function (data) {
-                        var d = data;
-                        console.log(data);
-                        if (data === '{"isvalid":"valid login","type":"adm"}') {
-                            $location.path('/admin');
-                            $scope.loginf = true;
-                            $scope.username = "";
-                            $scope.password = "";
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-                            $scope.loggedIn = true;
-                            $scope.loginType = data.type;
-                        }
-                        else if (data === '{"isvalid":"valid login","type":"com"}') {
-                            $location.path('/upload');
-                            $scope.loginf = true;
-                            $scope.username = "";
-                            $scope.password = "";
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-                        } else {
-                            swal('Wrong login');
-                        }
-
-                        if (!$scope.$$phase)
-                            $scope.$apply();
-
-
-                    });
-
-                };
+           
                 getusers();
                 function getusers() {
                     userService.getUser(angular.toJson()).then(function (data) {
-                        $scope.users = data;
+                       $scope.users = data;
                         if (!$scope.$$phase)
                             $scope.$apply();
 
@@ -110,7 +73,7 @@
                 $scope.DeleteUser = function (data) {
                     var obj = data;
                     swal({
-                        title: "do you want to delet user " + data.user_id,
+                        title: "do you want to delete user " + data.user_id,
                         text: "You will not be able to recover this details!",
                         type: "warning",
                         showCancelButton: true,
@@ -125,14 +88,18 @@
 
                             userService.deleteUser(angular.toJson(obj)).then(function (data) {
                                 var d = data;
-                                getUsers();
                                 if (!$scope.$$phase)
                                     $scope.$apply();
                             });
-                            getUsers();
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-                            swal("Deleted!", "Get in to the view of user", "success");
+                            
+                             userService.getUser(angular.toJson()).then(function (data) {
+                       $scope.users = data;
+                        if (!$scope.$$phase)
+                            $scope.$apply();
+
+                    });
+                            
+                         swal("Deleted!", "Get in to the view of user", "success");   
 
                         }
                         else {
@@ -150,8 +117,9 @@
                         {field: 'phone_number', displayName: 'Phone'},
                         {field: 'email', displayName: 'Email'},
                         {field: 'designation', displayName: 'Designation'},
-                        {field: 'user_type', displayName: 'User Type'},
-                        {field: 'province_id', displayName: 'Province'},
+                      //  {field: 'user_type', displayName: 'User Type'},
+                        //{field: 'province_id', displayName: 'Province'},
+                        {field: '', width: '35px', cellTemplate: '<div class="ngCellText"><button class="btn btn-primary btn-xs"  ng-click="resetpassword(row.entity.user_id)" title="Reset Password">{{row.getProperty(col.field)}}<span class="glyphicon glyphicon-refresh" style="margin-right: 0px;padding-right: 0px; border-right-style:none;"></span></button></div>'},
                         {field: '', width: '35px', cellTemplate: '<div class="ngCellText"><button class="btn btn-danger btn-xs"  ng-click="DeleteUser(row.entity)" title="Delete">{{row.getProperty(col.field)}}<span class="glyphicon glyphicon-trash" style="margin-right: 0px;padding-right: 0px; border-right-style:none;"></span></button></div>'},
                         {field: '', width: '35px', cellTemplate: '<div class="ngCellText"><button class="btn btn-success btn-xs"  ng-click="ConformUser(row.entity.id)" title="Confirm">{{row.getProperty(col.field)}}<span class="glyphicon glyphicon-ok" style="margin-right: 0px;padding-right: 0px; border-right-style:none;"></span></button></div>'},
                         {field: '', width: '35px', cellTemplate: '<div class="ngCellText"><button class="btn btn-primary btn-xs"  ng-click="EditUser(row.entity)" title="Edit">{{row.getProperty(col.field)}}<span class="glyphicon glyphicon-edit" style="margin-right: 0px;padding-right: 0px; border-right-style:none;"></span></button></div>'},
@@ -218,10 +186,13 @@
                             Id: current.item.value1,
                             Name: current.item.label
                         };
+                        $scope.users.province_id = $scope.province.Name
                         if (!$scope.$$phase)
                             $scope.$apply();
                     }
                 });
+                
+              
 
                 $scope.userUpdate = function () {
                     var obj = {
@@ -261,6 +232,16 @@
                     });
 
                 };
+                
+                $scope.resetpassword = function(user){
+                    var obj = {
+                        "username":user
+                    }
+                    console.log(obj);
+                    userService.resetpassword(angular.toJson(obj)).then(function (data){
+                        swal('We successfully change your password,check your email.');
+                    })
+                }
 
                 $scope.userReg = function () {
                     var obj = {

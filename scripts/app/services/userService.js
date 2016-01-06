@@ -1,14 +1,13 @@
 (function (angular) {
-    angular.module('bcsCollectControllers').service('userService', function (ajaxService) {
+    angular.module('bcsCollectControllers').service('userService', function (ajaxService,Session) {
         var self = this;
 
 
         self.login = function (data, callback) {
-            console.log(data);
             return ajaxService.post({
                 url: 'login/',
                 data: data,
-                dataType: 'text',
+                dataType: 'json',
                 contentType:'application/json;'
             }).done(function (result) {
                 if (typeof callback === "function")
@@ -24,7 +23,7 @@
                 dataType: 'json',
                 contentType:'application/json;'
             }).done(function (result) {
-                 
+                
                 if (typeof callback === "function")
                     callback(result);
                    // alert(result);
@@ -44,6 +43,7 @@
                 dataType: 'json',
                 contentType:'application/json;'
             }).done(function (result) {
+                
                 if (typeof callback === "function")
                     callback(result);
                    // alert(result);
@@ -111,6 +111,24 @@
                 dataType: 'json',
                 contentType:'application/json;'
             }).done(function (result) {
+                if (typeof callback === "function")
+                    callback(result);
+                   // alert(result);
+            }).error(function (error) {
+               if (typeof callback === "function")
+                    callback(error);
+                   
+            });
+        };
+        
+         self.resetpassword = function (data, callback) {
+            return ajaxService.post({
+                url: 'resetpw/',
+                data:data,
+                dataType: 'json',
+                contentType:'application/json;'
+            }).done(function (result) {
+                console.log(result);
                 if (typeof callback === "function")
                     callback(result);
                    // alert(result);

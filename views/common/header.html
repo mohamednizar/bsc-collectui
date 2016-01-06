@@ -1,12 +1,15 @@
 
 <section>
-    <div class="col-lg-12 row page-header" ng-controller="PreviewController">
-        <div class="col-lg-4">    
+    <div class="col-lg-12 row page-header" ng-controller="LoginController">
+        <div class="col-lg-4">   
+            <div login-dialog ng-if="isLoginPage">
+                <a href="#/logout" class="btn btn-danger" ng-click="logout()" >Logout</a>
+            </div>
+            
         <img src="images/logo8.png" style="width:150px" alt="" class="logo col-lg-2" >
     </div>   
     <br><br><br><br>
-        <div class="col-lg-2 home col-lg-offset-6"  >
-        <button type="button" class="btn btn-group-justified" ng-click="uploadtrue()">Home</button>
-    </div>
+        <div  ng-hide = "main" class="col-lg-2 home col-lg-offset-4"  >      
+            </div>
     </div>
 </section>

@@ -7,6 +7,8 @@
   $scope.userRoles = USER_ROLES;
   $scope.isAuthorized = AuthService.isAuthorized;
  
+ 
+ console.log($scope.currentUser);
   $scope.setCurrentUser = function (user) {
     $scope.currentUser = user;
   };

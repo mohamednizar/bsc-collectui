@@ -1,20 +1,26 @@
 <body ng-controller="LoginController">
-<div ng-if="currentUser">Welcome, {{ currentUser.name }}</div>
+    <br>
+    
+    <div class="text-info">
+    <div login-dialog ng-if="!isLoginPage"></div>
+<div ng-if="currentUser">Welcome, {{ currentUser.user_id}}</div>
 
-<div ng-if="isAuthorized(userRoles.admin)">You're admin.</div>
-
-<div ng-switch on="currentUser.role">
-  <div ng-switch-when="userRoles.admin">You're admin.</div>
-  <div ng-switch-when="userRoles.editor">You're editor.</div>
-  <div ng-switch-default>You're something else.</div>
+<div ng-if="isAuthorized(userRoles.admin)">You're logged as admin.</div><div  class="col-md-1 col-md-offset-11"><a href="#/logout" class="btn btn-danger" ng-click="logout()" >Logout</a>  </div>
+<div class="row">
+<div ng-switch on="currentUser.role" class="col-md-2">
+  <div ng-switch-when="userRoles.adm ">You're admin.</div>
+  <div ng-switch-when="userRoles.com  ">You're comm User.</div>
+     
 </div>
-
+     
+    </div>
+    </div>
+  
 
 <div class="row" ng-controller="adminController">
-    
+     
 
     <div class="col-md-12">
-        <input id="Button2" type="submit"  class="btn btn-danger col-lg-offset-4" value="Log Out" ng-click="EditUser()" />
         <h5>Admin Panel</h5>
 
         <tabset>    

@@ -1,6 +1,6 @@
 (function (angular) {
     angular.module('bcsCollectControllers').controller("PreviewController",
-            function ($scope, XLSXReaderService, kpiService) {
+            function ($scope, XLSXReaderService, kpiService,AuthService) {
                 $scope.showPreview = false;
                 $scope.showJSONPreview = true;
                 $scope.json_string = "";
@@ -22,21 +22,40 @@
                 $scope.errorCount = 0;
                 $scope.errorMessag = true;
                 $scope.progress = true;
+                $scope.progressCount = 0;
                 $scope.newstatus = [];
-                $scope.uploadtrue = function () {
-                    window.location.reload();
-                    
-                    
+               
+                
+                
+               
+                $scope.$watch(AuthService.isAuthenticated,function(isAuthenticated){
+                $scope.isAuthenticated = isAuthenticated;
+            });
+                
+                
+                 $scope.backtohome = function(){
+                    $scope.upload = $scope.upload === true ? false : true;
+                    $scope.success = $scope.success === true ? false : true;
+                    $scope.excelFile = [];
+                     if (!$scope.$$phase)
+                         $scope.$apply();
                 };
+                
+                $scope.uploadtrue = function(){
+                    $scope.upload = $scope.upload === true ? false : true;
+                    $scope.isProcessing = $scope.isProcessing === false ? true :false;
+                     $scope.ShowkpiError = $scope.ShowkpiError === true ? false : true;
+                     $scope.KPIData = [];
+                    $scope.KPIDateError=[];
+                }
                 $scope.fileChanged = function (files) {
                     $scope.sheets = [];
                     $scope.v = 0;
                     $scope.excelFile = files[0];
                     var ftype = files[0].type;
                     console.log(ftype);
-                    if ((ftype ==="application/vnd.ms-excel"||ftype==="application/vnd.ms-excel"||ftype==="application/vnd.ms-excel"||ftype==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"||ftype==="application/vnd.openxmlformats-officedocument.spreadsheetml.template"||ftype==="application/vnd.ms-excel.sheet.macroEnabled.12"||ftype==="application/vnd.ms-excel.template.macroEnabled.12"||ftype==="application/vnd.ms-excel.addin.macroEnabled.12"||ftype==="application/vnd.ms-excel.sheet.binary.macroEnabled.12")){
-                       
-                    
+                    if (ftype === "application/vnd.ms-excel" || ftype === "application/vnd.ms-excel" || ftype === "application/vnd.ms-excel" || ftype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || ftype === "application/vnd.openxmlformats-officedocument.spreadsheetml.template" || ftype === "application/vnd.ms-excel.sheet.macroEnabled.12" || ftype === "application/vnd.ms-excel.template.macroEnabled.12" || ftype === "application/vnd.ms-excel.addin.macroEnabled.12" || ftype === "application/vnd.ms-excel.sheet.binary.macroEnabled.12") {
+   
                     XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function (xlsxData) {
                         $scope.sheets = xlsxData.sheets;
                         var kpi = $scope.sheets;
@@ -83,7 +102,8 @@
                                         "kpiName": kpiName,
                                         "metricName": metric,
                                         "date": fdate,
-                                        "value": Kvalue
+                                        "value": Kvalue,
+                                        "userid":$scope.currentUser.user_id
                                     };
                                      //console.log(Kvalue +'--'+ typeof kpiObject.value +'--'+ isNaN(kpiObject.value.valueOf()));
                                         
@@ -93,6 +113,7 @@
                                       //  console.log($scope.KPIDateError+'error');
                                     }
                                     else if((isNaN(kpiObject.value)=== true)&&(kpiObject.date !=="" ) ){
+                                        $scope.excelFile = [];
                                         swal('Not Valid Number for ' +kpiObject.metricName+' In date column  ' +kpiObject.date);
                                         $scope.KPIDateError.push(kpiObject);
                                        
@@ -118,14 +139,11 @@
 
                                                //console.log($scope.KPIData) ; 
                                             }else{
+                                                $scope.excelFile = [];
                                                 swal({ title: "Data Duplication Error",   text: "You will not be able to upload this excel file!",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, Change it!",   closeOnConfirm: true }, function(){ 
                                                     $scope.excelFile = [];
                                                     $scope.upload = true;
                                                      return false;
-                                                    
-                                                    
-                                                    console.log('don');
-                                                   
                                                    if (!$scope.$$phase)
                                                         $scope.$apply();
                                                 });
@@ -146,24 +164,32 @@
                      $scope.isDate = function(date) {
                         return ( (new Date(date) !== "Invalid Date" && !isNaN(new Date(date)) ));
                     }
+                        $scope.isProcessing = true;
                           //$scope.isProcessing = false;
                         // console.log($scope.KPIData.length);
                         console.log($scope.KPIData);
                        
 
-                        if ($scope.KPIData.length > 0) {
+                        if ($scope.KPIDateError.length > 0) {
                             $scope.isProcessing = true;
                             $scope.upload = false;
                             $scope.ShowkpiError = true;
+                             if (!$scope.$$phase)
+                                 $scope.$apply();                          
+                                                  
                             
                            // console.log($scope.status);
                         }
                         if ($scope.KPIDateError.length >0){
                              $scope.ShowkpiError = false;
+                             if (!$scope.$$phase)
+                                 $scope.$apply(); 
                              console.log($scope.KPIDateError);  
                         }else{
                             $scope.upload = false;
                             $scope.ShowkpiError = true;
+                             if (!$scope.$$phase)
+                                 $scope.$apply(); 
                         }
                         
                         
@@ -176,8 +202,11 @@
                         swal('The file you uploaded is not an Excel file');
                          $scope.upload = true;
                          $scope.isProcessing = false;
-                         $scope.ShowkpiError = false;
+                         $scope.ShowkpiError = true;
+                         if (!$scope.$$phase)
+                                 $scope.$apply(); 
                     }
+                    
                     
                     
                 };
@@ -185,7 +214,7 @@
                 $scope.kpiStatus = {
                     data: 'errors',
                     columnDefs: [
-                        {field: 'metricName', width: '50%', displayName: 'Metric Name', enableCellEdit: true, cellTemplate: '<div ng-class="{red: row.entity.reason === \'Metric is not defined. Pleace check the new excel template\' || row.entity.reason === \'User is not defined. Pleace log in as collect user\' }"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'},
+                        {field: 'metricName', width: '50%', displayName: 'Metric Name', enableCellEdit: true, cellTemplate: '<div ng-class="{red: row.entity.reason === \'Metric is not defined. Pleace check the new excel template\' ||  row.entity.reason === \'kpi metric mapping is incorrect\' || row.entity.reason === \'User is not defined. Pleace log in as collect user\' }"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'},
                         {field: 'date', width: '10%', displayName: 'Date'},
                         {field: 'value', width: '10%', displayName: 'Value', enableCellEdit: true, cellTemplate: '<div ng-class="{yellow: row.entity.reason === \'value is too low - data is updated\' || row.entity.reason === \'value is too High - data is updated\' ||  row.entity.reason === \'value is too low - data is inserted\' || row.entity.reason === \'value is too High - data is updated\'}"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'},
                         {field: 'reason', displayName: 'Status', enableCellEdit: false
@@ -195,16 +224,18 @@
                 $scope.kpiError = {
                     data: 'KPIDateError',
                     columnDefs: [
-                        {field: 'metricName', width: '50%', displayName: 'Metric Name', enableCellEdit: true, cellTemplate: '<div ng-class="{red: row.entity.reason === \'Metric is not defined. Pleace check the new excel template\' || row.entity.reason === \'User is not defined. Pleace log in as collect user\' }"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'},
+                        {field: 'metricName', width: '50%', displayName: 'Metric Name', enableCellEdit: true, cellTemplate: '<div ng-class="{red: row.entity.reason === \'Metric is not defined. Pleace check the new excel template\'  || row.entity.reason === \'User is not defined. Pleace log in as collect user\' }"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'},
                         {field: 'date', width: '10%', displayName: 'Date'},
                         {field: 'value', width: '10%', displayName: 'Value', enableCellEdit: true, cellTemplate: '<div ng-class="{yellow: row.entity.reason === \'value is too low - data is updated\' || row.entity.reason === \'value is too High - data is updated\' ||  row.entity.reason === \'value is too low - data is inserted\' || row.entity.reason === \'value is too High - data is updated\'}"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'},
-                        {field: 'reason', displayName: 'Status', enableCellEdit: false
+                        {field: 'reason', displayName: 'Status', enableCellEdit: false,cellTemplate: '<div ng-class="{red: row.entity.reason === \'Metric is not defined. Pleace check the new excel template\' || row.entity.reason === \'kpi metric mapping is incorrect\' || row.entity.reason === \'User is not defined. Pleace log in as collect user\' }"><div class="ngCellText" >{{row.getProperty(col.field)}}</div></div>'
                         }],
                 };
 
                 function reset() {
                     $scope.isProcessing = false;
                     $scope.loginf = true;
+                     if (!$scope.$$phase)
+                         $scope.$apply(); 
                 };
                 
 
@@ -247,6 +278,82 @@
 
 
                 $scope.forcSubmit = function () {
+                     swal({
+                        title: "do you want to force Submit ",
+                        text: "The data with Errors will not submit to the System,you can't recover this operation again",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, Submit it!",
+                        cancelButtonText: "No, cancel please!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                          
+                    kpiService.confirm(angular.toJson(error)).then(function (data) {
+                        var s = data.response;
+                        var errorCount = 0;
+                        $scope.errors = [];
+                        angular.forEach(s, function (d) {
+                            $scope.status.push(d);
+                            //  console.log(d);
+                            if ((d.reason === 'Metric is not defined. Pleace check the new excel template')
+                                    || (d.reason === 'kpi metric mapping is incorrect')
+                                    || (d.reason === 'User is not defined. Pleace log in as collect user')) {
+                                errorCount += 1;
+                                $scope.errors.push(d);
+                                if (!$scope.$$phase)
+                                    $scope.$apply();
+                                // console.log(d.reason);
+                            }
+
+                        });
+
+                        if (errorCount > 0) {
+                            $scope.showStatus = true;
+                            $scope.success = true;
+                             if (!$scope.$$phase)
+                                 $scope.$apply(); 
+
+
+                        } else {
+                            kpiService.confirmRemote().then(function (data) {
+                                   console.log(data);
+                            
+                            });
+                            $scope.showStatus = false;
+                            $scope.loginf = true;
+                            $scope.success = false;
+                            $scope.status = [];
+                                 if (!$scope.$$phase)
+                                 $scope.$apply(); 
+                           
+
+
+                        }
+                        //    console.log($scope.status);
+                        $scope.progress = false;
+                        $scope.upload = false;
+                        
+
+                        if (!$scope.$$phase)
+                            $scope.$apply();
+                    }, function (error) {
+                        console.log(error);
+                        swal(error.statusText+',Try Again Later')
+                        
+                    });
+                            swal("Submited!", "Get back to the upload screen again", "success");
+
+                        }
+                        else {
+                            swal("Cancelled", "Continue the edits :)", "success");
+                        }
+
+                    });
+
                     var d = $scope.KPIData;
                     $scope.newstatus = [];
                     angular.forEach(d, function (k) {
@@ -254,7 +361,8 @@
                             "kpiName": k.kpiName,
                             "metricName": k.metricName,
                             "date": k.date,
-                            "value": k.value
+                            "value": k.value,
+                            "userid":$scope.currentUser.user_id
                         };
                         $scope.newstatus.push(data);
                         if (!$scope.$$phase)
@@ -273,94 +381,10 @@
                     //  console.log(obj);
                     if (obj!=""){
                        
-                    kpiService.confirm(angular.toJson(obj)).then(function (data) {
-                        var s = data.response;
-                        var errorCount = 0;
-                        $scope.errors = [];
-                        angular.forEach(s, function (d) {
-                            $scope.status.push(d);
-                            //  console.log(d);
-                            if ((d.reason === 'Metric is not defined. Pleace check the new excel template')
-                                    || (d.reason === 'User is not defined. Pleace log in as collect user')) {
-                                errorCount += 1;
-                                $scope.errors.push(d);
-                                if (!$scope.$$phase)
-                                    $scope.$apply();
-                                // console.log(d.reason);
-                            }
-
-                        });
-
-                        if (errorCount > 0) {
-                            $scope.showStatus = true;
-                            $scope.success = true;
-                            console.log()
-
-
-                        } else {
-                            kpiService.confromRemote();
-                            $scope.showStatus = false;
-                            $scope.loginf = true;
-                            $scope.success = false;
-                            $scope.status = [];
-
-
-                        }
-                        //    console.log($scope.status);
-                        $scope.progress = false;
-                        $scope.upload = false;
-
-                        if (!$scope.$$phase)
-                            $scope.$apply();
-                    }, function (error) {
-                        console.log(error);
-                    }); 
+                   
                     } 
                     if (error !=""){
-                        
-                    kpiService.confirm(angular.toJson(error)).then(function (data) {
-                        var s = data.response;
-                        var errorCount = 0;
-                        $scope.errors = [];
-                        angular.forEach(s, function (d) {
-                            $scope.status.push(d);
-                            //  console.log(d);
-                            if ((d.reason === 'Metric is not defined. Pleace check the new excel template')
-                                    || (d.reason === 'User is not defined. Pleace log in as collect user')) {
-                                errorCount += 1;
-                                $scope.errors.push(d);
-                                if (!$scope.$$phase)
-                                    $scope.$apply();
-                                // console.log(d.reason);
-                            }
-
-                        });
-
-                        if (errorCount > 0) {
-                            $scope.showStatus = true;
-                            $scope.success = true;
-
-
-                        } else {
-                            kpiService.confirmRemote();
-                            $scope.showStatus = false;
-                            $scope.loginf = true;
-                            $scope.success = false;
-                            $scope.status = [];
-
-
-                        }
-                        //    console.log($scope.status);
-                        $scope.progress = false;
-                        $scope.upload = false;
-
-                        if (!$scope.$$phase)
-                            $scope.$apply();
-                    }, function (error) {
-                        console.log(error);
-                        swal(error.statusText+',Try Again Later')
-                        
-                    });
+                   
                     }
                     reset();
 
@@ -404,6 +428,25 @@
                                     || (d.reason === 'Metric is not defined. Pleace check the new excel template')
                                     || (d.reason === 'User is not defined. Pleace log in as collect user')) {
                                 errorCount += 1;
+                                if (errorCount > 0) {
+                                    $scope.KPIDateError = true;
+                                    $scope.success = true;
+                                     if (!$scope.$$phase)
+                                 $scope.$apply(); 
+
+                                }else {
+                            kpiService.confirmRemote().then(function (data) {
+                                   console.log(data);
+                                 $scope.KPIDateError = false;
+                            $scope.loginf = true;
+                            $scope.success = false;
+                            $scope.status = [];
+                             if (!$scope.$$phase)
+                                 $scope.$apply(); 
+                            });
+                           
+
+                        }
                                 $scope.errors.push(d);
                                 if (!$scope.$$phase)
                                     $scope.$apply();
@@ -415,15 +458,19 @@
                         if (errorCount > 0) {
                             $scope.KPIDateError = true;
                             $scope.success = true;
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                            
 
                         } else {
                             kpiService.confirmRemote().then(function (data) {
-                                //   console.log(data);
+                                   console.log(data);
+                                 $scope.KPIDateError = false;
+                                    $scope.loginf = true;
+                                    $scope.success = false;
+                                    $scope.status = [];
                             });
-                            $scope.KPIDateError = false;
-                            $scope.loginf = true;
-                            $scope.success = false;
-                            $scope.status = [];
+                           
 
                         }
                         //    console.log($scope.status);
@@ -434,10 +481,17 @@
                             $scope.$apply();
                     }, function (error) {
                         console.log(error);
-                        swal(error.statusText+',Try Again Later')
+                        swal(error.statusText+',We could not connect the remote server.We upload your data once wth DB get online')
+                        $scope.loading = true;
+                        
+                        
                     });
                     reset();
 
+                };
+                
+                $scope.errorTable = {
+                    'data':'errors'
                 };
                 
                 $scope.updatereson = function () {
@@ -448,7 +502,8 @@
                             "kpiName": k.kpiName,
                             "metricName": k.metricName,
                             "date": k.date,
-                            "value": k.value
+                            "value": k.value,
+                            "userid":$scope.currentUser.user_id
                         };
                         $scope.newstatus.push(data);
                         if (!$scope.$$phase)
@@ -476,6 +531,7 @@
                                     || (d.reason === 'value is too High - same data value ignored')
                                     || (d.reason === 'value is too low - same data value ignored')
                                     || (d.reason === 'Metric is not defined. Pleace check the new excel template')
+                                    || (d.reason === 'kpi metric mapping is incorrect')
                                     || (d.reason === 'User is not defined. Pleace log in as collect user')) {
                                 errorCount += 1;
                                 $scope.errors.push(d);
@@ -491,8 +547,8 @@
                             $scope.success = true;
 
                         } else {
-                            kpiService.confromRemote().then(function (data) {
-                                //   console.log(data);
+                             kpiService.confirmRemote().then(function (data) {
+                                   console.log(data);
                             });
                             $scope.showStatus = false;
                             $scope.loginf = true;
@@ -513,9 +569,9 @@
                     reset();
 
                 };
-
+                
                 $scope.confirm = function () {
-
+                    
                     var obj = {
                         "insertedMetricDatas": $scope.KPIData
                     };
@@ -536,12 +592,14 @@
                                     || (d.reason === 'value is too High - data is updated')
                                     || (d.reason === 'value is too High - data is inserted')
                                     || (d.reason === 'Metric is not defined. Pleace check the new excel template')
-                                    || (d.reason === 'User is not defined. Pleace log in as collect user')) {
+                                    || (d.reason === 'User is not defined. Pleace log in as collect user')
+                                    || (d.reason === 'kpi metric mapping is incorrect')) {
                                 errorCount += 1;
                                 $scope.errors.push(d);
                                 //     console.log(d.reason);
                             }
-
+                            var count = ($scope.status.length - 1 )/($scope.KPIData.length)*100;
+                            $scope.progressCount =parseInt(count);
 
                         });
                         if (errorCount > 0) {
@@ -550,13 +608,17 @@
                             
                         } else {
                             $scope.loading = true;
-                            kpiService.confromRemote().then(function (data) {
-                                //   console.log(data);
+                            $scope.success = false;
+                            kpiService.confirmRemote().then(function (data) {
+                                 console.log(data);
                                  $scope.loading = false;
-                                console.log(data);
                                 
-                            });
+                                
+                            }),function(d){
+                                console.log(d);
+                            };
                             $scope.showStatus = false;
+                            $scope.success = false;
                             $scope.loginf = true;
                             $scope.loading = true;
                             $scope.ShowkpiError = true;

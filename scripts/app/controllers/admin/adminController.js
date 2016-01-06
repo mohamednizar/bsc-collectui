@@ -1,17 +1,21 @@
 (function (angular) {
-    angular.module('bcsCollectControllers').controller("adminController", ['$scope', '$state', '$location',
-        function ($scope, $state, $location, $rootScope, AUTH_EVENTS, AuthService,USER_ROLES) {
-
+    angular.module('bcsCollectControllers').controller("adminController", ['$scope','$state', '$location','AuthService',
+        function ($scope, $state, $location,AuthService,$rootScope,$q,Session) {
+           
             $scope.tabs = [
                 {title: 'Stucture Upload', template: "stucUpld", active: false},
                 {title: 'User Registration ', template: "newUser", active: false},
                 {title: 'All Users', template: "users", active: false}
             ];
-
+            $scope.$watch(AuthService.isAuthenticated,function(isAuthenticated){
+                $scope.isAuthenticated = isAuthenticated;
+                
+            });
             $scope.val = "";
             $scope.clickTab = function (data) {
                 $state.transitionTo(data);
             };
+            
             //Active Tab when Page Refresh
             function activeTab() {
                 var count = 0;
